@@ -9,13 +9,13 @@ const userRouter = require("./routes/User.js");
 // Server Initialization
 const app = express();
 
-// // Middleware
-// app.use(cors({
-//     origin: ["authentication-client-flax.vercel.app"],
-//     methods: ["POST", "PUT", "PATCH", "GET"],
-//     credentials: true
-// })); // Add cors middleware here
-app.use(cors());
+// Middleware
+app.use(cors({
+    origin: ["authentication-client-flax.vercel.app"],
+    methods: ["POST", "PUT", "PATCH", "GET", "OPTIONS"],
+    credentials: true
+})); // Add cors middleware here
+// app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
