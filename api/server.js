@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ["https://deploy-mern-authentication.vercel.app"],
+    origin: ["https://authentication-phi-one.vercel.app/"],
     methods: ["POST", "PUT", "PATCH", "GET"],
     credentials: true
 
