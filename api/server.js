@@ -10,6 +10,7 @@ const userRouter = require("./routes/User.js");
 const app = express();
 
 // Middleware
+app.use(cors());
 // Custom middleware to handle OPTIONS requests
 app.use((req, res, next) => {
     if (req.method === 'OPTIONS') {
