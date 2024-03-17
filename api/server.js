@@ -10,12 +10,15 @@ const userRouter = require("./routes/User.js");
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: ["https://authentication-client-flax.vercel.app"],
-    methods: ["POST", "PUT", "PATCH", "GET", "OPTIONS"],
-    credentials: true
-})); // Add cors middleware here
-// app.use(cors());
+// Custom middleware to handle OPTIONS requests
+app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200); // Respond with 200 OK for OPTIONS requests
+    } else {
+        next(); // Pass the request to the next middleware/route handler
+    }
+});
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
