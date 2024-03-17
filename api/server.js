@@ -23,6 +23,10 @@ app.use(express.urlencoded({ extended: true }));
 // Route Initialization
 app.use('/auth', userRouter);
 
+app.get('/', (req, res) => {
+  res.json("Hello");  
+});
+
 // Server Run
 const PORT = process.env.PORT || 5000; // Use provided PORT or default to 5000
 app.listen(PORT, () => {
