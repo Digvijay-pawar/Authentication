@@ -1,0 +1,28 @@
+.form-control
+{
+    box-shadow: none;
+    outline: none;
+}
+@media (max-width: 500px) {
+    .container-fluid {
+      max-width: 100%;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  
+    .container {
+      max-width: 100%;
+      padding-left: 15px;
+      padding-right: 15px;
+      color: rgba(31, 210, 222, 0.573);
+      
+    }
+  
+    .fixed-bottom {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 1030;
+    }
+  }
+  
