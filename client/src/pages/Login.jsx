@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdLogin, MdVisibility, MdVisibilityOff } from 'react-icons/md';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -9,6 +11,14 @@ const Login = () => {
         mobile_number: '',
         password: '',
     });
+
+    const handleSuccess = (msg) => {
+        toast.success(msg);
+      };
+    
+      const handleError = (err) => {
+        toast.error(err);
+      };
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
@@ -26,13 +36,13 @@ const Login = () => {
         //Validations
         const mobile_numberRegex = /^\d{10}$/;
         if (!mobile_numberRegex.test(mobile_number)) {
-            setError('Mobile number must be 10 digits');
+            handleError('Mobile number must be 10 digits');
             return;
         }
 
         // Validation for password
         if (password.length < 8) {
-            setError('Password must be at least 8 characters long');
+            handleError('Password must be at least 8 characters long');
             return;
         }
 
@@ -64,6 +74,7 @@ const Login = () => {
 
     return (
         <div className="container-fluid border min-vh-100" style={{ maxWidth: '500px' }}>
+            <ToastContainer />
             <div className="row text-dark justify-content-between align-items-center bg-primary">
                 <div className="col py-3 d-flex align-items-center">
                     <MdLogin size={30} className="mr-3" />
