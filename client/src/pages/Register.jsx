@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdAppRegistration, MdVisibility, MdVisibilityOff } from 'react-icons/md';
-import {ToastContainer, toast} from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState('');
     const [countdown, setCountdown] = useState(0);
     const [formData, setFormData] = useState({
         mobile_number: '',
@@ -18,6 +17,14 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const handleSuccess = (msg) => {
+        toast.success(msg);
+    };
+
+    const handleError = (err) => {
+        toast.error(err);
+    };
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -28,31 +35,30 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { mobile_number, password, confirmPassword, otp, invite_code } = formData;
-        setError('');
 
         // Validation for mobile number
         const mobile_numberRegex = /^\d{10}$/;
         if (!mobile_numberRegex.test(mobile_number)) {
-            setError('Mobile number must be 10 digits');
+            handleError('Mobile number must be 10 digits');
             return;
         }
 
         // Validation for password
         if (password.length < 8) {
-            setError('Password must be at least 8 characters long');
+            handleError('Password must be at least 8 characters long');
             return;
         }
 
         // Validation for password match
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            handleError('Passwords do not match');
             return;
         }
 
         // Validation for OTP
         const otpRegex = /^\d{6}$/;
         if (!otpRegex.test(otp)) {
-            setError('OTP must be 6 digits');
+            handleError('OTP must be 6 digits');
             return;
         }
 
@@ -73,8 +79,13 @@ const Register = () => {
 
         const res = await data.json();
         if (res.message) {
-            localStorage.setItem("usersdatatoken",res.token);
-            navigate('/home')
+            localStorage.setItem("usersdatatoken", res.token);
+            handleSuccess("Register successfully!")
+            setTimeout(() => {
+                navigate('/home');
+            }, 2000);
+        } else {
+            handleError(res.error)
         }
     };
 
@@ -90,7 +101,7 @@ const Register = () => {
         // Logic to send OTP
         const { mobile_number } = formData;
         if (!mobile_number) {
-            setError('Mobile number is required');
+            handleError('Mobile number is required');
             return;
         }
 
@@ -110,13 +121,14 @@ const Register = () => {
 
     return (
         <div className="container-fluid border min-vh-100" style={{ maxWidth: '500px' }}>
+            <ToastContainer />
             <div className="row text-dark justify-content-between align-items-center bg-primary">
                 <div className="col py-3 d-flex align-items-center">
                     <MdAppRegistration size={30} className='mr-3' />
-                    <h4 className='mb-0'> <b> Create Account</b></h4>
+                    <h3 className='mb-0'> <b> &nbsp; Create Account</b></h3>
                 </div>
             </div>
-            <div className="row p-5 text-center">
+            <div className="row p-3 text-center">
                 <div className="col">
                     Logo
                 </div>
@@ -124,12 +136,6 @@ const Register = () => {
             <div className="row justify-content-between align-items-center py-3">
                 <div className="col">
                     <form onSubmit={handleSubmit}>
-                        {/* Bootstrap alert for displaying errors */}
-                        {error && (
-                            <div className="alert alert-danger" role="alert">
-                                {error}
-                            </div>
-                        )}
                         <div className="mb-3">
                             <input type="tel" required className="form-control py-2" onChange={handleChange} value={formData.mobile_number} name="mobile_number" placeholder="Mobile Number" style={{ outline: "none", boxShadow: "none" }} />
                         </div>
