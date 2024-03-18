@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { MdReply, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ForgotPassword() {
     const [formData, setFormData] = useState({
-        mobileNumber: '',
-        newPassword: '',
+        mobile_number: '',
+        new_password: '',
         otp: ''
     });
-    const [error, setError] = useState('');
+    const handleSuccess = (msg) => {
+        toast.success(msg);
+    };
+
+    const handleError = (err) => {
+        toast.error(err);
+    };
     const [countdown, setCountdown] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -20,37 +28,57 @@ function ForgotPassword() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const { mobileNumber, newPassword, otp } = formData;
-        setError('');
-
+        const { mobile_number, new_password, otp } = formData;
         // Validation for mobile number
-        const mobileNumberRegex = /^\d{10}$/;
-        if (!mobileNumberRegex.test(mobileNumber)) {
-            setError('Mobile number must be 10 digits');
+        const mobile_numberRegex = /^\d{10}$/;
+        if (!mobile_numberRegex.test(mobile_number)) {
+            handleError('Mobile number must be 10 digits');
             return;
         }
 
         // Validation for password
-        if (newPassword.length < 8) {
-            setError('Password must be at least 8 characters long');
+        if (new_password.length < 8) {
+            handleError('Password must be at least 8 characters long');
             return;
         }
 
         if (otp.length < 6) {
-            setError('OTP must be 6 digits');
+            handleError('OTP must be 6 digits');
             return;
         }
 
         // Submit the form
-        console.log(formData);
+        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/change-password`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                mobile_number,
+                new_password,
+                otp
+            })
+        });
+
+        const res = await data.json();
+
+        if (res.message) {
+            handleSuccess("Password Changed successfully!");
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
+        } else {
+            //handleError("Login Failed!");
+            handleError(res.error); // Set the error message received from the backend
+        }
     };
 
     const handleSendOtp2 = () => {
-        const { mobileNumber } = formData;
-        if (!mobileNumber) {
-            setError('Mobile number is required');
+        const { mobile_number } = formData;
+        if (!mobile_number) {
+            handleError('Mobile number is required');
             return;
         }
         setCountdown(60);
@@ -62,6 +90,7 @@ function ForgotPassword() {
 
     return (
         <div className="container-fluid border min-vh-100" style={{ maxWidth: '500px' }}>
+            <ToastContainer />
             <div className="row text-dark justify-content-between align-items-center bg-primary">
                 <div className="col py-3 d-flex align-items-center">
                     <MdReply size={30} className='mr-3' onClick={() => navigate('/login')} />
@@ -76,18 +105,12 @@ function ForgotPassword() {
             <div className="row justify-content-between align-items-center py-3">
                 <div className="col">
                     <form onSubmit={handleSubmit}>
-                        {/* Bootstrap alert for displaying errors */}
-                        {error && (
-                            <div className="alert alert-danger" role="alert">
-                                {error}
-                            </div>
-                        )}
                         <div className="mb-3">
-                            <input type="tel" className="form-control py-2" onChange={handleChange} required value={formData.mobileNumber} name="mobileNumber" placeholder="Mobile Number" style={{ outline: "none", boxShadow: "none" }} />
+                            <input type="tel" className="form-control py-2" onChange={handleChange} required value={formData.mobile_number} name="mobile_number" placeholder="Mobile Number" style={{ outline: "none", boxShadow: "none" }} />
                         </div>
                         <div className="mb-3">
                             <div className="input-group">
-                                <input type={showPassword ? "text" : "password"} className="form-control py-2" onChange={handleChange} required value={formData.newPassword} name="newPassword" placeholder="New Password" style={{ outline: "none", boxShadow: "none" }} />
+                                <input type={showPassword ? "text" : "password"} className="form-control py-2" onChange={handleChange} required value={formData.new_password} name="new_password" placeholder="New Password" style={{ outline: "none", boxShadow: "none" }} />
                                 <button type="button" className="btn btn-outline-dark" onClick={togglePasswordVisibility}>
                                     {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
                                 </button>
