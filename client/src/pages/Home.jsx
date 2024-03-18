@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Home() {
+    const handleSuccess = (msg) => {
+        toast.success(msg);
+      };
+    
+      const handleError = (err) => {
+        toast.error(err);
+      };
 
     const [mobile_number, setMobile_number] = useState();
     const navigate = useNavigate();
@@ -34,11 +42,17 @@ function Home() {
             }
         });
         const res = await data.json();
-
-        if(res.message){
-            navigate('/')
+    
+        if (res.message) {
+            handleSuccess("Successfully logged out");
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
+        } else {
+            handleError("Logout failed");
         }
     }
+    
 
     useEffect(() => {
         getCurrentUser();
@@ -50,6 +64,11 @@ function Home() {
             <h5>Mobile Number: {mobile_number}</h5>
             <h5 className='text-capitalize text-dark'>Account Status: {status}</h5>
             <button className='btn btn-danger btn-lg w-50' onClick={handleLogout}>Logout</button>
+            <div>
+                <button onClick={handleSuccess}>Show Success Message</button>
+                <button onClick={handleError}>Show Error Message</button>
+                <ToastContainer />
+            </div>
         </div>
     );
 }
