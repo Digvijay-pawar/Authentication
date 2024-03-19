@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdAppRegistration, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createUser } from '../api/AuthApi';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -63,23 +64,8 @@ const Register = () => {
         }
 
         // Register logic here
-        console.log(formData, process.env.REACT_APP_BACKEND_URL)
-        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/create-user`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                mobile_number,
-                password,
-                invite_code,
-                otp
-            })
-        });
-
-        const res = await data.json();
+        const res = await createUser({mobile_number, password, invite_code, otp});
         if (res.message) {
-            localStorage.setItem("usersdatatoken", res.token);
             handleSuccess("Register successfully!")
             setTimeout(() => {
                 navigate('/home');
