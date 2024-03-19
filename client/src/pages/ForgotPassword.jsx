@@ -50,7 +50,7 @@ function ForgotPassword() {
         }
 
         // Submit the form
-        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/change-password`, {
+        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/change-password`, {
             method: "PATCH",
             headers: {
                 "Content-Type": 'application/json'
