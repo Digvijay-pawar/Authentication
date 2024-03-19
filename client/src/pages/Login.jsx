@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdLogin, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { loginUser } from '../api/AuthApi';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -14,11 +15,11 @@ const Login = () => {
 
     const handleSuccess = (msg) => {
         toast.success(msg);
-      };
-    
-      const handleError = (err) => {
+    };
+
+    const handleError = (err) => {
         toast.error(err);
-      };
+    };
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
@@ -32,26 +33,23 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { mobile_number, password } = formData;
-    
-        // Validations (code omitted for brevity)
-    
-        // Login logic here
-        console.log(formData);
-        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/login-user`, {
-            method: "POST",
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                mobile_number,
-                password
-            })
-        });
-    
-        const res = await data.json();
-    
+
+        // Validation for mobile number
+        const mobile_numberRegex = /^\d{10}$/;
+        if (!mobile_numberRegex.test(mobile_number)) {
+            handleError('Mobile number must be 10 digits');
+            return;
+        }
+
+        // Validation for password
+        if (password.length < 8) {
+            handleError('Password must be at least 8 characters long');
+            return;
+        }
+
+        const res = await loginUser({ mobile_number, password });
+
         if (res.message) {
-            localStorage.setItem("usersdatatoken", res.token);
             handleSuccess("Login successfully!");
             setTimeout(() => {
                 navigate('/home');
@@ -61,7 +59,7 @@ const Login = () => {
             handleError(res.error); // Set the error message received from the backend
         }
     };
-    
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
