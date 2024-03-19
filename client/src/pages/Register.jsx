@@ -1,170 +1,140 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { MdAppRegistration, MdVisibility, MdVisibilityOff } from 'react-icons/md';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { createUser } from '../api/AuthApi';
+import React, { useEffect, useState } from 'react';
+import { MdAccountBalanceWallet } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import NavbarTab from '../components/NavbarTab';
+import { getBalance } from '../api/BalanceApi';
 
-const Register = () => {
+const Recharge = () => {
+    const [balance, setBalance] = useState();
     const navigate = useNavigate();
-    const [countdown, setCountdown] = useState(0);
-    const [formData, setFormData] = useState({
-        mobile_number: '',
-        password: '',
-        confirmPassword: '',
-        otp: '',
-        invite_code: '',
-    });
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [rechargeAmount, setRechargeAmount] = useState('');
 
-    const handleSuccess = (msg) => {
-        toast.success(msg);
+    // Function to handle click on predefined recharge amounts
+    const handleAmountClick = async (amount) => {
+        setRechargeAmount(amount);
     };
 
-    const handleError = (err) => {
-        toast.error(err);
-    };
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { mobile_number, password, confirmPassword, otp, invite_code } = formData;
-
-        // Validation for mobile number
-        const mobile_numberRegex = /^\d{10}$/;
-        if (!mobile_numberRegex.test(mobile_number)) {
-            handleError('Mobile number must be 10 digits');
-            return;
-        }
-
-        // Validation for password
-        if (password.length < 8) {
-            handleError('Password must be at least 8 characters long');
-            return;
-        }
-
-        // Validation for password match
-        if (password !== confirmPassword) {
-            handleError('Passwords do not match');
-            return;
-        }
-
-        // Validation for OTP
-        const otpRegex = /^\d{6}$/;
-        if (!otpRegex.test(otp)) {
-            handleError('OTP must be 6 digits');
-            return;
-        }
-
-        // Register logic here
-        const res = await createUser({mobile_number, password, invite_code, otp});
-        if (res.message) {
-            handleSuccess("Register successfully!")
-            setTimeout(() => {
-                navigate('/home');
-            }, 2000);
-        } else {
-            handleError(res.error)
+    const fetchBalance = async () => {
+        try {
+            const res = await getBalance();
+            setBalance(res.balance);
+        } catch (error) {
+            // Handle error
+            console.error('Error fetching balance:', error);
         }
     };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+    // Function to handle recharge button click
+    const handleRecharge = () => {
 
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
-
-    const handleSendOtp = () => {
-        // Logic to send OTP
-        const { mobile_number } = formData;
-        if (!mobile_number) {
-            handleError('Mobile number is required');
-            return;
-        }
-
-        // For now, let's just set the countdown to 60 seconds
-        setCountdown(60);
     };
 
     useEffect(() => {
-        if (countdown > 0) {
-            const timer = setTimeout(() => {
-                setCountdown(countdown - 1);
-            }, 1000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [countdown]);
+        fetchBalance();
+    })
 
     return (
-        <div className="container-fluid border min-vh-100" style={{ maxWidth: '500px' }}>
-            <ToastContainer />
+        <div className="container-fluid bg- border min-vh-100" style={{ maxWidth: '500px' }}>
             <div className="row text-dark justify-content-between align-items-center bg-primary">
                 <div className="col py-3 d-flex align-items-center">
-                    <MdAppRegistration size={30} className='mr-3' />
-                    <h3 className='mb-0'> <b> &nbsp; Create Account</b></h3>
+                    <MdAccountBalanceWallet size={30} className='mr-3' />
+                    <h4 className='mb-0'> <b>&nbsp; Recharge</b></h4>
+                </div>
+                <div className="col text-end">
+                    <Link to={"/recharge-records"} className='text-dark text-decoration-none'><b>Records</b></Link>
                 </div>
             </div>
-            <div className="row p-3 text-center">
-                <div className="col">
-                    Logo
+
+            <div className="row">
+                <div className="col text-center py-4">
+                    <h6 className='text-secondary'><b>Balance</b></h6>
+                    <h4 className='mb-0'><b>₹ {balance || 0}</b></h4>
                 </div>
             </div>
-            <div className="row justify-content-between align-items-center py-3">
+
+            <div className="container mt-1">
+                <div className="row">
+                    <div className="col text-dark">
+                        <label htmlFor="rechargeAmount">Amount</label>
+                        <div className="input-group mb-3">
+                            <div className="">
+                                <h1 className=" p-2"><b>₹</b></h1>
+                            </div>
+                            <input
+                                type="text"
+                                className="form-control bg-"
+                                id="rechargeAmount"
+                                placeholder='500-10000'
+                                style={{
+                                    outline: "none",
+                                    boxShadow: "none",
+                                    fontSize: "30px",
+                                    fontWeight: "bold",
+                                    border: "none",
+                                    borderBottom: "1px solid black"
+                                }}
+                                value={rechargeAmount}
+                                onChange={(e) => setRechargeAmount(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row p-3">
+                <div className="d-flex gap-2">
+                    <div className="col-4 py-2 border bg-light font-weight-bold rounded text-center" onClick={() => handleAmountClick('500')}>
+                        <b> 500 </b>
+                    </div>
+                    <div className="col-4 py-2 font-weight-bold bg-light rounded border text-center" onClick={() => handleAmountClick('1000')}>
+                        <b>1000 </b>
+                    </div>
+                    <div className="col-4 py-2 font-weight-bold bg-light border rounded text-center" onClick={() => handleAmountClick('2000')}>
+                        <b>2000 </b>
+                    </div>
+                </div>
+            </div>
+            <div className="row px-3">
+                <div className="d-flex gap-2">
+                    <div className="col-4 py-2 border font-weight-bold bg-light rounded text-center" onClick={() => handleAmountClick('1500')}>
+                        <b> 1500 </b>
+                    </div>
+                    <div className="col-4 py-2 font-weight-bold bg-light border rounded text-center" onClick={() => handleAmountClick('2500')}>
+                        <b>2500 </b>
+                    </div>
+                    <div className="col-4 py-2 font-weight-bold bg-light border rounded text-center" onClick={() => handleAmountClick('5000')}>
+                        <b>5000 </b>
+                    </div>
+                </div>
+            </div>
+
+            <div className="row mt-4 px-3">
                 <div className="col">
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <input type="tel" required className="form-control py-2" onChange={handleChange} value={formData.mobile_number} name="mobile_number" placeholder="Mobile Number" style={{ outline: "none", boxShadow: "none" }} />
-                        </div>
-                        <div className="mb-3">
-                            <div className="input-group">
-                                <input type={showPassword ? "text" : "password"} required className="form-control py-2" onChange={handleChange} value={formData.password} name="password" placeholder="Create Password" style={{ outline: "none", boxShadow: "none" }} />
-                                <button type="button" className="btn btn-outline-dark" onClick={togglePasswordVisibility}>
-                                    {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="mb-3">
-                            <div className="input-group">
-                                <input type={showConfirmPassword ? "text" : "password"} required className="form-control py-2" onChange={handleChange} value={formData.confirmPassword} name="confirmPassword" placeholder="Confirm Password" style={{ outline: "none", boxShadow: "none" }} />
-                                <button type="button" className="btn btn-outline-dark" onClick={toggleConfirmPasswordVisibility}>
-                                    {showConfirmPassword ? <MdVisibilityOff /> : <MdVisibility />}
-                                </button>
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col">
-                                <input type="text" required className="form-control py-2" onChange={handleChange} value={formData.otp} name="otp" placeholder="OTP" style={{ outline: "none", boxShadow: "none" }} />
-                            </div>
-                            <div className="col">
-                                <button type="button" className="btn btn-success form-control py-2" onClick={handleSendOtp} disabled={countdown > 0}><b>{countdown > 0 ? `Resend OTP (${countdown})` : "Send OTP"}</b></button>
-                            </div>
-                        </div>
-                        <div className="mb-3">
-                            <input type="text" className="form-control py-2" onChange={handleChange} name="invite_code" value={formData.invite_code} placeholder="Invite Code" style={{ outline: "none", boxShadow: "none" }} />
-                        </div>
-                        <div className="mb-3">
-                            <button type="submit" className="btn btn-dark btn-lg form-control py-2"><b>Create Account</b></button>
-                        </div>
-                        <div className="text-center">
-                            <span className="text-secondary">Already have an account?</span>
-                            <br />
-                            <Link to={'/'} className='btn btn-info w-50 mt-3'>Login</Link>
-                        </div>
-                    </form>
+                    <button className="btn btn-dark btn-lg w-100" onClick={handleRecharge}>
+                        Recharge
+                    </button>
+                </div>
+            </div>
+
+            <div className="container border-top py-2 text-center fixed-bottom bg-primary" style={{ maxWidth: '500px' }}>
+                <div className="row">
+                    <div className="col">
+                        <NavbarTab tabName="Home" />
+                    </div>
+                    <div className="col">
+                        <NavbarTab tabName="Invite" />
+                    </div>
+                    <div className="col">
+                        <NavbarTab tabName="Recharge" />
+                    </div>
+                    <div className="col">
+                        <NavbarTab tabName="My" />
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Register;
+export default Recharge;
