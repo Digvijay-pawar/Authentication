@@ -1,74 +1,104 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { MdHomeFilled, MdRefresh } from 'react-icons/md';
+import { Link, useNavigate } from 'react-router-dom';
+import NavbarTab from '../components/NavbarTab';
+import FastParityImg from '../img/fast-parity.jpg';
+import ParityImg from '../img/parity.jpg';
+import Parity1Img from '../img/parity1.jpg';
+import SapreImg from '../img/sapre.jpg';
+import {getBalance} from '../api/BalanceApi';
 function Home() {
-    const handleSuccess = (msg) => {
-        toast.success(msg);
-      };
-    
-      const handleError = (err) => {
-        toast.error(err);
-      };
-
-    const [mobile_number, setMobile_number] = useState();
     const navigate = useNavigate();
-    const [status, setStatus] = useState();
-    const getCurrentUser = async () => {
-        let token = localStorage.getItem("usersdatatoken");
-        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/get-user`, {
-            method: "GET",
-            headers: {
-                "Content-Type": 'application/json',
-                "Authorization": token
-            }
-        });
-        const res = await data.json();
+    const [balance, setBalance] = useState(0);
 
-        if (res.message) {
-            setMobile_number(res.mobile_number);
-            setStatus(res.status);
+    const fetchBalance = async () => {
+        try {
+          const res = await getBalance();
+          setBalance(res.balance);
+        } catch (error) {
+          // Handle error
+          console.error('Error fetching balance:', error);
+        }
+    };
+
+    const handleRefreshBalance = async () => {
+        try {
+            await getBalance();
+        } catch (error) {
+            console.error(error);
         }
     }
-
-    const handleLogout = async () => {
-        let token = localStorage.getItem("usersdatatoken");
-        localStorage.removeItem('usersdatatoken');
-        const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/logout`, {
-            method: "GET",
-            headers: {
-                "Content-Type": 'application/json',
-                "Authorization": token
-            }
-        });
-        const res = await data.json();
-    
-        if (res.message) {
-            handleSuccess("Successfully logged out");
-            setTimeout(() => {
-                navigate('/');
-            }, 2000);
-        } else {
-            handleError("Logout failed");
-        }
-    }
-    
 
     useEffect(() => {
-        getCurrentUser();
-    }, [])
+        fetchBalance();
+    }, []);
+
     return (
-        <div className='card p-5 bg-info m-5 text-center align-items-center'>
-            <h1>Home page</h1>
-            <h3>User Details</h3>
-            <h5>Mobile Number: {mobile_number}</h5>
-            <h5 className='text-capitalize text-dark'>Account Status: {status}</h5>
-            <button className='btn btn-danger btn-lg w-50' onClick={handleLogout}>Logout</button>
-            <div>
-                <button onClick={handleSuccess}>Show Success Message</button>
-                <button onClick={handleError}>Show Error Message</button>
-                <ToastContainer />
+        <div className="container-fluid bg- border min-vh-100" style={{ maxWidth: '500px' }}>
+            <div className="row text-dark justify-content-between align-items-center bg-primary">
+                <div className="col py-3 d-flex align-items-center">
+                    <MdHomeFilled size={30} className='mr-2' />
+                    <h4 className='mb-0'><b> Home</b></h4>
+                </div>
             </div>
+
+            <div className="row justify-content-between align-items-center border-bottom py-2">
+                <div className="col-6 align-items-center py-3 overflow-hidden">
+                    <h5 className="mb-0">Balance</h5>
+                    <div className="d-flex mt-2">
+                        <h4 className='mb-0'><b>₹ {balance || 0}</b></h4>
+                        <MdRefresh
+                            size={30}
+                            onClick={handleRefreshBalance}
+                            style={{cursor: 'pointer'}}
+                        />
+                    </div>
+                </div>
+                <div className="col-6 text-end">
+                    <Link to={'/withdraw'} className="btn btn-primary mx-2 btn-sm w-100"><b>Withdraw</b></Link>
+                    <Link to={'/recharge'} className="btn btn-outline-dark mx-2 mt-2 btn-sm w-100"> <b> Recharge</b></Link>
+                </div>
+            </div>
+
+            <div className="container">
+                <div className="row p-2 py-3 justify-content-between align-items-center gap-1">
+                    <div className="col card bg-success p-2 text-white" onClick={() => navigate('/task-reward')} ><b>Task Reward</b></div>
+                    <div className="col card bg-info p-2 text-white" onClick={() => navigate('/check-in')} ><b>Daily Reward</b></div>
+                </div>
+            </div>
+
+            <div className="row border-top py-2">
+                <div className="col-6 p-1">
+                    <img src={FastParityImg} className="w-100 img-fluid rounded" alt="" />
+                </div>
+                <div className="col-6 p-1">
+                    <img src={Parity1Img} className="w-100 img-fluid rounded" alt="" />
+                </div>
+                <div className="col-6 p-1 mt-2">
+                    <img src={SapreImg} className="w-100 img-fluid rounded" alt="" />
+                </div>
+                <div className="col-6 p-1 mt-2">
+                    <img src={ParityImg} className="w-100 img-fluid rounded" alt="" />
+                </div>
+            </div>
+            <div className="container border-top py-2 text-center fixed-bottom bg-primary" style={{ maxWidth: '500px' }}>
+                <div className="row">
+                    <div className="col">
+                        <NavbarTab tabName="Home" />
+                    </div>
+                    <div className="col">
+                        <NavbarTab tabName="Invite" />
+                    </div>
+                    <div className="col">
+                        <NavbarTab tabName="Recharge" />
+                    </div>
+                    <div className="col">
+                        <NavbarTab tabName="My" />
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     );
 }
