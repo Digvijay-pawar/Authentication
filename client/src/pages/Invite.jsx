@@ -27,7 +27,7 @@ const My = () => {
             <div className="row text-dark justify-content-between align-items-center bg-primary">
                 <div className="col py-3 d-flex align-items-center">
                     <MdGroupAdd size={30} className='mr-2' />
-                    <h4 className='mb-0'> <b> Invite</b></h4>
+                    <h4 className='mb-0'> <b> &nbsp; Invite</b></h4>
                 </div>
             </div>
 
@@ -47,7 +47,7 @@ const My = () => {
             </div>
 
             <div className="container py-3" style={{ borderBottom: "15px solid silver" }}>
-                <div className="row text-center font-weight-bold  ">
+                <div className="row text-center font-weight-bold  text-dark">
                     <div className="col border-end">
                         {/* <img src="https://i.ibb.co/0kYp8gR/Group-1.png" alt="Group-1" border="0" /> */}
                         <b>My Team</b>
@@ -59,27 +59,27 @@ const My = () => {
                 </div>
             </div>
 
-            {/* <div className="container" style={{borderBottom: "15px solid silver"}}>
-                <div className="row text-center p-3">
+            <div className="container" style={{borderBottom: "15px solid silver"}}>
+                <div className="row text-center text-dark p-3">
                     <div className="col border-end">
                         Total Invite 
                         <br />
-                        {totalReferral}
+                        { 0 }
                         <br />
                     </div>
                     <div className="col">
                         Total Income
                         <br />
-                        {totalIncome}
+                        { 0 }
                         <br />
                     </div>
                 </div>
-            </div> */}
+            </div>
 
-            <div className="container p-2">
-                <div className="container">
-                    <div className="row text-center mt-3 pb-2 border-bottom" style={{ fontWeight: "bold" }}>
-                        <div className="col">
+            <div className="py-2">
+                <div className="container-fluid p-0">
+                    <div className="row text-dark text-center mt-3 pb-2 border-bottom" style={{ fontWeight: "bold" }}>
+                        <div className="col-5">
                             Mobile Number
                         </div>
                         <div className="col">
