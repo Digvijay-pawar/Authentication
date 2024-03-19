@@ -10,7 +10,13 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Home from './pages/Home';
 import { LoginContext } from './context/LoginContext';
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
+import Recharge from './pages/Recharge';
+import Withdrawal from './pages/Withdraw';
+import My from './pages/My';
+import Invite from './pages/Invite';
+import { validateUser } from './api/AuthApi';
+import Error from './pages/Error';
 
 function App() {
   const { setLoginData } = useContext(LoginContext);
@@ -24,19 +30,7 @@ function App() {
           throw new Error("No token found");
         }
 
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/valid-user`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": token
-          }
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to verify user");
-        }
-
-        const data = await res.json();
+        const data = await validateUser();
 
         if (data.validUser) {
           setLoginData(data);
@@ -46,7 +40,7 @@ function App() {
         }
       } catch (error) {
         console.error("Error validating user:", error);
-        navigate('/');
+        navigate('/not-found');
       }
     };
 
@@ -61,6 +55,11 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/home' element={<Home />} />
+        <Route path='/recharge' element={<Recharge/>}></Route>
+        <Route path='/withdraw' element={<Withdrawal/>}></Route>
+        <Route path='/my' element={<My/>}></Route>
+        <Route path='/invite' element={<Invite/>}></Route>
+        <Route path='/not-found' element={<Error/>}></Route>
       </Routes>
   );
 }
