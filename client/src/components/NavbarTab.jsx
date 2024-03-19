@@ -7,18 +7,18 @@ const NavbarTab = (props) => {
 
     let resultTab = "";
     if (props.tabName === "Home") {
-        resultTab = <MdHomeFilled size={30} className="mr-3tab-icon align-self-center" />
+        resultTab = <MdHomeFilled size={30} className="mr-3 tab-icon text-dark align-self-center" />
     } else if (props.tabName === "Invite") {
-        resultTab = <MdGroupAdd size={30} className="mr-3tab-icon align-self-center" />
+        resultTab = <MdGroupAdd size={30} className="mr-3 tab-icon text-dark align-self-center" />
     } else if (props.tabName === "Recharge") {
-        resultTab = <MdAccountBalanceWallet size={30} className="mr-3tab-icon align-self-center" />
+        resultTab = <MdAccountBalanceWallet size={30} className="mr-3 text-dark tab-icon align-self-center" />
     } else if (props.tabName === "My") {
-        resultTab = <MdAccountCircle size={30} className="mr-3tab-icon align-self-center" />
+        resultTab = <MdAccountCircle size={30} className="mr-3 tab-icon text-dark align-self-center" />
     }
     return (
         <div className=' d-flex flex-column align-items-center text-center' onClick={() => navigate(`/${props.tabName}`)}>
             {resultTab}
-            <span className=''>{props.tabName}</span>
+            <span className='text-dark'>{props.tabName}</span>
         </div>
     );
 };
