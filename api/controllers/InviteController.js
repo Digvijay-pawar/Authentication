@@ -19,7 +19,7 @@ class InviteSchemaController {
             }
 
             //find referrals for the user
-            const inviteUser = await Invite.find({ invitee_mobile_number: mobile_number });
+            const inviteUser = await Invite.find({ mobile_number: mobile_number });
 
             //find total amount & user
             const { totalAmountEarned, numberOfReferrals } = await InviteSchemaController.calculateEarningsAndReferralsForMobileNumber(mobile_number);
