@@ -94,11 +94,11 @@ const Login = () => {
                             </div>
                         </div>
                         <div className="mb-3">
-                            <input type="tel" className="form-control py-2" required onChange={handleChange} value={formData.mobile_number} name="mobile_number" placeholder="Mobile Number" style={{ outline: "none", boxShadow: "none" }} />
+                            <input type="tel" className="form-control py-3" required onChange={handleChange} value={formData.mobile_number} name="mobile_number" placeholder="Mobile Number" style={{ outline: "none", boxShadow: "none" }} />
                         </div>
                         <div className="mb-3">
                             <div className="input-group">
-                                <input type={showPassword ? "text" : "password"} className="form-control py-2" required onChange={handleChange} value={formData.password} name="password" placeholder="Create Password" style={{ outline: "none", boxShadow: "none" }} />
+                                <input type={showPassword ? "text" : "password"} className="form-control py-3" required onChange={handleChange} value={formData.password} name="password" placeholder="Create Password" style={{ outline: "none", boxShadow: "none" }} />
                                 <button type="button" className="btn btn-outline-dark" onClick={togglePasswordVisibility}>
                                     {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
                                 </button>
