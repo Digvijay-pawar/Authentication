@@ -95,7 +95,7 @@ const Invite = () => {
             </div>
 
             <div className="py-2">
-                <div className="container-fluid p-0">
+                <div className="container-fluid p-0" data-bs-scroll="true">
                     <div className="row text-dark text-center mt-3 pb-2 border-bottom" style={{ fontWeight: "bold" }}>
                         <div className="col-5">
                             Mobile Number
@@ -122,9 +122,65 @@ const Invite = () => {
                             </div>
                         ))
                     }
+                    <div className="row shadow mt-3 m-3 text-center py-3 border rounded-2" style={{ fontWeight: "normal", fontSize: "20px", backgroundColor: `${1 === "Pending" ? "rgba(255, 255, 0, 0.350)" : "rgba(153, 240, 131, 0.350)"}` }}>
+                        <div className="col">
+                            8389893434
+                        </div>
+                        <div className={`col text-capitalize text-${1 === "Pending" ? "warning" : "success"}`}>
+                            <b>Approved</b>
+                        </div>
+                        <div className="col">
+                            100
+                        </div>
+                    </div>
+                    <div className="row shadow mt-3 m-3 text-center py-3 border rounded-2" style={{ fontWeight: "normal", fontSize: "20px", backgroundColor: `${1 === "Pending" ? "rgba(255, 255, 0, 0.350)" : "rgba(153, 240, 131, 0.350)"}` }}>
+                        <div className="col">
+                            8389893434
+                        </div>
+                        <div className={`col text-capitalize text-${1 === "Pending" ? "warning" : "success"}`}>
+                            <b>Approved</b>
+                        </div>
+                        <div className="col">
+                            100
+                        </div>
+                    </div>
+                    <div className="row shadow mt-3 m-3 text-center py-3 border rounded-2" style={{ fontWeight: "normal", fontSize: "20px", backgroundColor: `${1 === "Pending" ? "rgba(255, 255, 0, 0.350)" : "rgba(153, 240, 131, 0.350)"}` }}>
+                        <div className="col">
+                            8389893434
+                        </div>
+                        <div className={`col text-capitalize text-${1 === "Pending" ? "warning" : "success"}`}>
+                            <b>Approved</b>
+                        </div>
+                        <div className="col">
+                            100
+                        </div>
+                    </div>
+                    <div className="row shadow mt-3 m-3 text-center py-3 border rounded-2" style={{ fontWeight: "normal", fontSize: "20px", backgroundColor: `${1 === "Pending" ? "rgba(255, 255, 0, 0.350)" : "rgba(153, 240, 131, 0.350)"}` }}>
+                        <div className="col">
+                            8389893434
+                        </div>
+                        <div className={`col text-capitalize text-${1 === "Pending" ? "warning" : "success"}`}>
+                            <b>Approved</b>
+                        </div>
+                        <div className="col">
+                            100
+                        </div>
+                    </div>
+                    <div className="row shadow mt-3 m-3 text-center py-3 border rounded-2" style={{ fontWeight: "normal", fontSize: "20px", backgroundColor: `${1 === "Pending" ? "rgba(255, 255, 0, 0.350)" : "rgba(153, 240, 131, 0.350)"}` }}>
+                        <div className="col">
+                            8389893434
+                        </div>
+                        <div className={`col text-capitalize text-${1 === "Pending" ? "warning" : "success"}`}>
+                            <b>Approved</b>
+                        </div>
+                        <div className="col">
+                            100
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <div className="p-5 m-5"></div>
 
             {/* Footer */}
             <div className="container border-top py-2 text-center fixed-bottom bg-primary" style={{ maxWidth: '500px' }}>
