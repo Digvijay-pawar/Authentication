@@ -48,8 +48,8 @@ const My = () => {
             {/* Content */}
             <div className="container p-4 mt-2 rounded" style={{ background: "rgb(0,0,255, 0.75)", color: "whitesmoke" }}>
                 <div className="row">
-                    <div className="col-2 p-0">
-                        <MdAccountCircle className="text-dark" size={70} />
+                    <div className="col-3 p-0">
+                        <MdAccountCircle className="text-white" size={70} />
                     </div>
                     <div className="col mt-2">
                         <span><big><b>7378744047</b></big></span>
@@ -58,12 +58,12 @@ const My = () => {
                     </div>
                 </div>
                 <div className="row mt-2">
-                    <div className="col">
-                        <button className=" btn btn-outline-light w-100 btn-sm"><MdEdit size={20} className='mr-2' />Change Password</button>
+                    <div className="col-7">
+                        <button className=" btn btn-light w-100 btn-sm"><MdEdit size={15} className='mr-2' /> Change Password</button>
                     </div>
-                    <div className="col">
+                    <div className="col-5">
                         <button className="btn btn-dark w-100  btn-sm" onClick={handleLogout}>
-                            <MdLogout size={20} className='mr-2' />
+                            <MdLogout size={15} className='mr-2' />
                             <b> Logout</b></button>
                     </div>
                 </div>

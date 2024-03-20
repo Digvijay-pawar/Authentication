@@ -8,6 +8,8 @@ const Withdraw = () => {
     const [balance, setBalance] = useState();
     const navigate = useNavigate();
 
+    const variable = "Amount < 1000"
+
     const fetchBalance = async () => {
         try {
             const res = await getBalance();
@@ -139,7 +141,7 @@ const Withdraw = () => {
                 </div>
                 <div className="row text-muted " style={{ fontSize: '12px' }}>
                     <div className="col ">
-                        Amount upto 1000, fee 30 <br />
+                        {variable}, fee 30 <br />
                         Amount > 1000, fee 3%
                     </div>
                     <div className="col text-end justify-content-end">
