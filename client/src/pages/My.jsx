@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import NavbarTab from '../components/NavbarTab';
 import { getBalance } from '../api/BalanceApi';
 import { logoutUser } from '../api/AuthApi';
+import { getInvites } from '../api/InviteApi';
 
 const My = () => {
     const [balance, setBalance] = useState();

@@ -3,9 +3,13 @@ import { MdGroupAdd } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import NavbarTab from '../components/NavbarTab';
 import { getBalance } from '../api/BalanceApi';
+import { getInvites } from '../api/InviteApi';
 
-const My = () => {
+const Invite = () => {
     const [balance, setBalance] = useState();
+    const [totalAmt, setTotalAmt] = useState();
+    const [totalCount, setTotalCount] = useState();
+    const [referral, setReferral] = useState([]);
 
     const fetchBalance = async () => {
         try {
@@ -17,8 +21,22 @@ const My = () => {
         }
     };
 
+    const fetchInvites = async () => {
+        try {
+            const res = await getInvites();
+            console.log(res)
+            setTotalAmt(res.totalAmount);
+            setTotalCount(res.totalCount);
+            setReferral(res.referrals);
+            console.log(res.referrals);
+        } catch (error) {
+            console.error("Error fetching invite details");
+        }
+    }
+
     useEffect(() => {
         fetchBalance();
+        fetchInvites();
     }, []);
 
     return (
@@ -31,7 +49,7 @@ const My = () => {
                 </div>
             </div>
 
-            <div className="container text-white bg-primary p-3 py-4 my-2 w-80 rounded">
+            <div className="container mt-2 shadow text-white bg-primary p-3 py-4 Invite-2 w-80 rounded">
                 <div className="row">
                     <div className="col">
                         Balance
@@ -50,7 +68,7 @@ const My = () => {
                 <div className="row text-center font-weight-bold  text-dark">
                     <div className="col border-end">
                         {/* <img src="https://i.ibb.co/0kYp8gR/Group-1.png" alt="Group-1" border="0" /> */}
-                        <b>My Team</b>
+                        <b>Invite Team</b>
                     </div>
                     <div className="col">
                         {/* <img src="https://i.ibb.co/0kYp8gR/Group-1.png" alt="Group-1" border="0" /> */}
@@ -59,18 +77,18 @@ const My = () => {
                 </div>
             </div>
 
-            <div className="container" style={{borderBottom: "15px solid silver"}}>
+            <div className="container" style={{ borderBottom: "15px solid silver" }}>
                 <div className="row text-center text-dark p-3">
                     <div className="col border-end">
-                        Total Invite 
+                        Total Invite
                         <br />
-                        { 0 }
+                        {totalCount}
                         <br />
                     </div>
                     <div className="col">
                         Total Income
                         <br />
-                        { 0 }
+                        {totalAmt}
                         <br />
                     </div>
                 </div>
@@ -89,19 +107,21 @@ const My = () => {
                             Amount
                         </div>
                     </div>
-                    {/* {invites.length > 0 && invites.map((invite) => (
-                            <div className="row mt-3 text-center py-3 border rounded-2" style={{fontWeight: "normal", fontSize: "20px", backgroundColor: `${invite.refferalStatus === "pending" ? "rgba(255, 255, 0, 0.150)" : "rgba(153, 240, 131, 0.150)"}`}}>
+                    {
+                        referral.map(invite => (
+                            <div className="row shadow mt-3 m-3 text-center py-3 border rounded-2" style={{ fontWeight: "normal", fontSize: "20px", backgroundColor: `${invite.status === "Pending" ? "rgba(255, 255, 0, 0.350)" : "rgba(153, 240, 131, 0.350)"}` }}>
                                 <div className="col">
-                                    {invite.mobileNumber}
+                                    {invite.invitee_mobile_number}
                                 </div>
-                                <div className={`col text-capitalize text-${invite.refferalStatus === "pending" ? "warning" : "success"}`}>
-                                    <b>{invite.refferalStatus }</b>
+                                <div className={`col text-capitalize text-${invite.status === "Pending" ? "warning" : "success"}`}>
+                                    <b>{invite.status}</b>
                                 </div>
                                 <div className="col">
-                                    {invite.referralAmount}
+                                    {invite.amount}
                                 </div>
                             </div>
-                    ))} */}
+                        ))
+                    }
                 </div>
             </div>
 
@@ -127,4 +147,4 @@ const My = () => {
     );
 };
 
-export default My;
+export default Invite;

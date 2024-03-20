@@ -40,7 +40,7 @@ function App() {
         }
       } catch (error) {
         console.error("Error validating user:", error);
-        navigate('/not-found');
+        navigate('/');
       }
     };
 
