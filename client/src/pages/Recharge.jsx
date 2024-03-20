@@ -55,7 +55,7 @@ const Recharge = () => {
 
             <div className="container mt-1">
                 <div className="row">
-                    <div className="col">
+                    <div className="col text-dark">
                         <label htmlFor="rechargeAmount">Amount</label>
                         <div className="input-group mb-3">
                             <div className="">

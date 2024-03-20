@@ -49,6 +49,9 @@ const Withdraw = () => {
                     <div className="col-2 bg-primary text-center text-white rounded">UPI</div>
                 </div>
                 <div className="row ">
+                    <div className="col px-4 py-2 text-center" onClick={() => navigate('/upi-id')}>
+                        <MdAddCircleOutline className='mb-3' size={40} />
+                    </div>
                     {/*                     
                     {
                             upiDetails ? 
@@ -84,6 +87,9 @@ const Withdraw = () => {
                     <div className="col-2 bg-info text-center text-white rounded">Bank</div>
                 </div>
                 <div className="row" >
+                    <div className="col px-4 py-2 text-center" onClick={() => navigate('/add-bank')}>
+                        <MdAddCircleOutline className='mb-3' size={40} />
+                    </div>
                     {/* {
                             bankDetails ? 
                             <div className="col px-4 py-2 align-items-start">
@@ -107,7 +113,7 @@ const Withdraw = () => {
             {/* Withdraw Amount */}
             <div className="container mt-4">
                 <div className="row">
-                    <div className="col">
+                    <div className="col text-dark">
                         <label htmlFor="WithdrawAmount">Amount</label>
                         <div className="input-group mb-3">
                             <div className="">
